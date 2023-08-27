@@ -3,8 +3,8 @@
 
 
 ## Created by Mochamad Nurul Adzan (Neizshya) & Fathurrochman Jatik Kusuma 
-This app created using React Native
-make sure you already got either ***YARN*** or ***NPM***
+This app created using React Native and Firebase for the auth, storage, and database. <br />
+Make sure you already got either ***YARN*** or ***NPM***
 
 ### Step 1 : Download or Clone the code to your local
 first you need to download or clone the code to your own device
