@@ -36,7 +36,7 @@ export default function Dashboard({navigation}) {
     thursday: {in: 0, out: 0},
     friday: {in: 0, out: 0},
   });
-  const [showFAB, setShowFAB] = useState(true);
+
   const fetchAllItems = async () => {
     try {
       const itemsCollectionRef = collection(firestore, 'items');
@@ -132,18 +132,6 @@ export default function Dashboard({navigation}) {
   useEffect(() => {
     fetchAllItems();
     fetchHistory();
-    const unsubscribeBlur = navigation.addListener('blur', () => {
-      setShowFAB(false);
-    });
-
-    const unsubscribeFocus = navigation.addListener('focus', () => {
-      setShowFAB(true);
-    });
-
-    return () => {
-      unsubscribeBlur();
-      unsubscribeFocus();
-    };
   }, []);
 
   const data = {
@@ -298,7 +286,7 @@ export default function Dashboard({navigation}) {
           )}
         </View>
       </View>
-      {loggedInUserData.userData.isAdmin && showFAB ? (
+      {loggedInUserData.userData.isAdmin ? (
         <>
           <FloatingButton
             onpressManual={() => {

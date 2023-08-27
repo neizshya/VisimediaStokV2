@@ -23,7 +23,7 @@ export default function ItemsScreen({navigation}) {
   const [isLoading, setIsLoading] = useState(true);
   const [itemsData, setItemsData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showFAB, setShowFAB] = useState(true);
+
   const fetchItems = async () => {
     try {
       const itemsCollectionRef = collection(firestore, 'items');
@@ -54,18 +54,6 @@ export default function ItemsScreen({navigation}) {
   };
   useEffect(() => {
     fetchItems();
-    const unsubscribeBlur = navigation.addListener('blur', () => {
-      setShowFAB(false);
-    });
-
-    const unsubscribeFocus = navigation.addListener('focus', () => {
-      setShowFAB(true);
-    });
-
-    return () => {
-      unsubscribeBlur();
-      unsubscribeFocus();
-    };
   }, []);
   useFocusEffect(
     useCallback(() => {
@@ -73,7 +61,6 @@ export default function ItemsScreen({navigation}) {
       return () => {};
     }, [searchQuery]),
   );
-
   return (
     <>
       <View
@@ -167,7 +154,7 @@ export default function ItemsScreen({navigation}) {
           <></>
         ) : (
           <>
-            {loggedInUserData.userData.isAdmin && showFAB ? (
+            {loggedInUserData.userData.isAdmin ? (
               <>
                 <FloatingButton
                   onpressManual={() => {

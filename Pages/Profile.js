@@ -4,7 +4,6 @@ import LoginButtons from '../src/Components/LoginButton';
 import {signOut} from 'firebase/auth';
 import {auth} from '../config/firebase';
 import {UserContext} from '../context/UserContext';
-import {FAB, PaperProvider, Portal} from 'react-native-paper';
 
 export default function ProfileScreen({navigation}) {
   const [logoutLoading, setLogoutLoading] = useState(false);
@@ -38,7 +37,6 @@ export default function ProfileScreen({navigation}) {
   const handleChangePassword = () => {
     navigation.navigate('ResetPassword');
   };
-
   return (
     <View style={{flex: 1}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#5689c0'} />

@@ -1,54 +1,68 @@
+import {SimpleLineIcons, AntDesign} from '@expo/vector-icons';
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {FAB, Portal} from 'react-native-paper';
+import {View, TouchableOpacity, StyleSheet, Animated} from 'react-native';
 
 const FloatingButton = ({onpressManual, onPressQr}) => {
-  const [fabOpen, setFabOpen] = useState({open: false});
+  const [icon_1] = useState(new Animated.Value(30));
+  const [icon_2] = useState(new Animated.Value(30));
 
-  const onStateChange = ({open}) => setFabOpen({open});
+  const [pop, setPop] = useState(false);
 
-  const {open} = fabOpen;
+  const popIn = () => {
+    setPop(true);
+    Animated.timing(icon_1, {
+      toValue: 130,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+    Animated.timing(icon_2, {
+      toValue: 110,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const popOut = () => {
+    setPop(false);
+    Animated.timing(icon_1, {
+      toValue: 30,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+    Animated.timing(icon_2, {
+      toValue: 30,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  };
+
   return (
-    <Portal>
-      <FAB.Group
-        fabStyle={styles.circle}
-        open={open}
-        visible
-        icon={open ? 'cancel' : 'plus'}
-        color="white"
-        actions={[
+    <View style={{}}>
+      <TouchableOpacity onPress={onpressManual}>
+        <Animated.View style={[styles.circle, {bottom: icon_1}]}>
+          <SimpleLineIcons name="drawer" size={20} color="#FFFF" />
+        </Animated.View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onPressQr}>
+        <Animated.View style={[styles.circle, {bottom: icon_2, right: icon_2}]}>
+          <AntDesign name="qrcode" size={20} color="#FFFF" />
+        </Animated.View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[
+          styles.circle,
           {
-            icon: 'plus',
-            label: 'Tambah Barang',
-            onPress: onpressManual,
-            style: {
-              backgroundColor: '#5689c0',
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-            color: 'white',
-          },
-          {
-            icon: 'qrcode-scan',
-            label: 'QRCode Scan',
-            onPress: onPressQr,
-            style: {
-              backgroundColor: '#5689c0',
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-            color: 'white',
+            bottom: pop ? icon_1._value : 30,
+            right: pop ? icon_2._value : 30,
           },
         ]}
-        onStateChange={onStateChange}
-      />
-    </Portal>
+        onPress={() => {
+          pop === false ? popIn() : popOut();
+        }}>
+        <AntDesign name="plus" size={20} color="#FFFF" />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -59,7 +73,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#5689c0',
     width: 60,
     height: 60,
-
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
