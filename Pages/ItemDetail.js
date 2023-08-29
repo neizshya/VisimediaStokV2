@@ -9,7 +9,13 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Dialog,
+  Portal,
+  TextInput,
+} from 'react-native-paper';
 import TambahBarangModal from '../src/Components/TambahBarangModal';
 import KurangiBarangModal from '../src/Components/KurangiBarangModal';
 import {firestore} from '../config/firebase';
@@ -33,6 +39,9 @@ const ItemDetail = ({route}) => {
   const {loggedInUserData} = useContext(UserContext);
   const {itemId} = route.params;
   const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
+
+  const hideDialog = () => setVisible(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
   const [barang, setBarang] = useState({
@@ -311,7 +320,7 @@ const ItemDetail = ({route}) => {
             ) : (
               <Button
                 style={styles.deleteButton}
-                onPress={handleDelete}
+                onPress={() => setVisible(true)}
                 loading={isLoadingDelete}>
                 <Text style={styles.deleteButtonText}>Hapus</Text>
               </Button>
@@ -319,6 +328,26 @@ const ItemDetail = ({route}) => {
           </View>
         )}
       </ScrollView>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Icon icon="alert" />
+          <Dialog.Title>Hapus {barang.item_name}?</Dialog.Title>
+          <Dialog.Content>
+            <Text>Apakah anda yakin akan menghapus barang tersebut?</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog} textColor="blue">
+              Tidak
+            </Button>
+            <Button
+              onPress={handleDelete}
+              textColor="red"
+              loading={isLoadingDelete}>
+              Ya
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </>
   );
 };
@@ -329,6 +358,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#fafafa',
     paddingVertical: 20,
+    paddingBottom: screenHeight * 0.34,
   },
   imgContainer: {
     flex: 1,

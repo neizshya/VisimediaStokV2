@@ -100,7 +100,7 @@ export default function ItemsScreen({navigation}) {
                   size={'large'}
                 />
               </View>
-            ) : (
+            ) : itemsData.length !== 0 ? (
               <FlatList
                 data={itemsData}
                 keyExtractor={item => item.id}
@@ -160,6 +160,19 @@ export default function ItemsScreen({navigation}) {
                   );
                 }}
               />
+            ) : (
+              <>
+                <View
+                  style={{
+                    height: screenHeight,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={{fontSize: 20, color: 'black'}}>
+                    Tidak Ada data
+                  </Text>
+                </View>
+              </>
             )}
           </SafeAreaView>
         </View>

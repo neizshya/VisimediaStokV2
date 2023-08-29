@@ -86,7 +86,7 @@ const TambahBarangModal = ({visible, onClose, item, onSave}) => {
           />
           {/* sender */}
           <TextInput
-            placeholder="Penerima"
+            placeholder="Pengirim"
             value={sender}
             onChangeText={setSender}
             style={{height: 40}}
