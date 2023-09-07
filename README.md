@@ -2,7 +2,7 @@
 
 
 
-## Created by Mochamad Nurul Adzan (Neizshya) & Fathurrochman Jatik Kusuma 
+## Created by Mochamad Nurul Adzan (Neizshya) & Fathurrochman Jati Kusuma 
 This app created using React Native and Firebase for the auth, storage, and database. <br />
 Make sure you already got either ***YARN*** or ***NPM***
 
