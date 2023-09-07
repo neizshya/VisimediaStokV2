@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {View, Text, Dimensions, ActivityIndicator} from 'react-native';
 import {StatusBar} from 'expo-status-bar';
 import {LineChart} from 'react-native-chart-kit';
@@ -8,6 +8,7 @@ import {collection, getDocs} from 'firebase/firestore';
 import moment from 'moment';
 import CardHome from '../src/Components/Card';
 import FloatingButton from '../src/Components/FloatingButton';
+import {useFocusEffect} from '@react-navigation/native';
 
 const chartConfig = {
   backgroundColor: '#1cc910',
@@ -38,6 +39,7 @@ export default function Dashboard({navigation}) {
   });
   const [showFAB, setShowFAB] = useState(true);
   const fetchAllItems = async () => {
+    setIsLoading(true);
     try {
       const itemsCollectionRef = collection(firestore, 'items');
       const querySnapshot = await getDocs(itemsCollectionRef);
@@ -55,6 +57,7 @@ export default function Dashboard({navigation}) {
   };
 
   const fetchHistory = async () => {
+    setIsLoadingHistory(true);
     try {
       const itemsCollectionRef = collection(firestore, 'history');
       const querySnapshot = await getDocs(itemsCollectionRef);
@@ -138,13 +141,15 @@ export default function Dashboard({navigation}) {
 
     const unsubscribeFocus = navigation.addListener('focus', () => {
       setShowFAB(true);
+      fetchAllItems();
+      fetchHistory();
     });
 
     return () => {
       unsubscribeBlur();
       unsubscribeFocus();
     };
-  }, []);
+  }, [navigation]);
 
   const data = {
     labels: [' Sen', ' Sel', ' Rab', ' Kam', ' Jum'],
